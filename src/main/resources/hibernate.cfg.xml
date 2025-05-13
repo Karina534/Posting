@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:postgresql://localhost:5432/PostingDB</property>
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+    <property name="connection.username">postgres</property>
+    <property name="connection.password">SmiSup704</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+    <mapping class="org.example.posting.hibernate.entity.Users"/>
+    <mapping class="org.example.posting.hibernate.entity.Subscription"/>
+    <mapping class="org.example.posting.hibernate.entity.SubscriptionType"/>
+    <mapping class="org.example.posting.hibernate.entity.Notification"/>
+    <mapping class="org.example.posting.hibernate.entity.PaymentMethod"/>
+    <mapping class="org.example.posting.hibernate.entity.Images"/>
+    <mapping class="org.example.posting.hibernate.entity.Article"/>
+    <mapping class="org.example.posting.hibernate.entity.Category"/>
+    <mapping class="org.example.posting.hibernate.entity.ViewStats"/>
+    <mapping class="org.example.posting.hibernate.entity.LikeStats"/>
+    <mapping class="org.example.posting.hibernate.entity.ViewLog"/>
+    <mapping class="org.example.posting.hibernate.entity.LikeLog"/>
+    <mapping class="org.example.posting.hibernate.entity.Comment"/>
+    <!-- DB schema will be updated if needed -->
+    <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+  </session-factory>
+</hibernate-configuration>
