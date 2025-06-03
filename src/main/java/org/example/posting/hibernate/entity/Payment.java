@@ -19,7 +19,7 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "subscription_id")
     private Subscription subscription;
 
@@ -32,7 +32,7 @@ public class Payment {
     @Column(name = "is_paid", nullable = false)
     private boolean isPaid = false;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 }

@@ -19,7 +19,7 @@ public class Article {
     @Column(name = "article_id")
     private Long articleId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private Users user;
 

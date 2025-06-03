@@ -16,7 +16,7 @@ public class LikeStats {
     @Column(name = "like_stats_id")
     private Long likeStatsId;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
 

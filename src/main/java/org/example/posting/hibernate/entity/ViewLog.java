@@ -19,11 +19,11 @@ public class ViewLog {
     @Column(name = "view_log_id")
     private Long viewLogId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
 

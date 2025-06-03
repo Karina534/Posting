@@ -19,11 +19,11 @@ public class LikeLog {
     @Column(name = "like_log_id")
     private Long likeLogId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
 

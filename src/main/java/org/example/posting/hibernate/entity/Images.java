@@ -18,7 +18,7 @@ public class Images {
     @Column(name = "image_id")
     private Long imageId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
 

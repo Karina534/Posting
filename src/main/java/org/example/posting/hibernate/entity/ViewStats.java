@@ -16,7 +16,7 @@ public class ViewStats {
     @Column(name = "view_stats_id")
     private Long viewStatsId;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
 

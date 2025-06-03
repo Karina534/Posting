@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString(exclude = "subscription")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
