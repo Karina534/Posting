@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class LikeLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "like_log_id")
     private Long likeLogId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -26,7 +27,7 @@ public class LikeLog {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @Column(nullable = false)
+    @Column(name = "like_date_time", nullable = false)
     private LocalDateTime likeDateTime;
 
     @PrePersist

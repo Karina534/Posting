@@ -1,12 +1,10 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +16,8 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer paymentId;
+    @Column(name = "payment_id")
+    private Long paymentId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subscription_id")
@@ -27,10 +26,10 @@ public class Payment {
     @Column(nullable = false)
     private Integer price;
 
-    @Column(nullable = false)
-    private LocalDateTime PaidDateTime;
+    @Column(name = "paid_date_time", nullable = false)
+    private LocalDateTime paidDateTime;
 
-    @Column(nullable = false)
+    @Column(name = "is_paid", nullable = false)
     private boolean isPaid = false;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

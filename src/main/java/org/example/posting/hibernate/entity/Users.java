@@ -21,6 +21,7 @@ import java.util.List;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
 
     @NotNull
@@ -45,6 +46,7 @@ public class Users {
 
     @NotNull
     @Past
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
@@ -56,6 +58,7 @@ public class Users {
 
     @NotNull
     @FutureOrPresent
+    @Column(name = "registration_date")
     private LocalDate registrationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,6 +67,16 @@ public class Users {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Article> articles = new ArrayList<>();
+
+    // Скорее всего часто не будет требоваться
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<LikeStats> likeStats = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ViewStats> viewStats = new ArrayList<>();
 
     @PrePersist
     public void prePersist(){

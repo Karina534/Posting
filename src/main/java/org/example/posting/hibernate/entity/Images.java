@@ -15,7 +15,8 @@ import java.time.LocalDate;
 public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer imagesId;
+    @Column(name = "image_id")
+    private Long imageId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "article_id")
@@ -24,6 +25,6 @@ public class Images {
     @Column(columnDefinition = "TEXT")
     private String url;
 
-    @Column(nullable = false)
+    @Column(name = "uploaded_date", nullable = false)
     private LocalDate uploadedDate;
 }

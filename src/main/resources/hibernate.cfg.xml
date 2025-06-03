@@ -17,6 +17,7 @@
     <mapping class="org.example.posting.hibernate.entity.SubscriptionType"/>
     <mapping class="org.example.posting.hibernate.entity.Notification"/>
     <mapping class="org.example.posting.hibernate.entity.PaymentMethod"/>
+    <mapping class="org.example.posting.hibernate.entity.Payment"/>
     <mapping class="org.example.posting.hibernate.entity.Images"/>
     <mapping class="org.example.posting.hibernate.entity.Article"/>
     <mapping class="org.example.posting.hibernate.entity.Category"/>

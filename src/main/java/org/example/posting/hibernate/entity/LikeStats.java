@@ -13,12 +13,13 @@ import lombok.NoArgsConstructor;
 public class LikeStats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer likeStatsId;
+    @Column(name = "like_stats_id")
+    private Long likeStatsId;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @Column(nullable = false)
+    @Column(name = "like_count", nullable = false)
     private Long likeCount = 0L;
 }

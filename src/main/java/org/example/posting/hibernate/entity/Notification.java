@@ -17,18 +17,19 @@ import java.time.LocalDateTime;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer notificationId;
+    @Column(name = "notification_id")
+    private Long notificationId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users users;
+    private Users user;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
 
-    @Column(nullable = false)
+    @Column(name = "send_date_time", nullable = false)
     private LocalDateTime sendDateTime;
 
-    @Column(nullable = false)
+    @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
 }

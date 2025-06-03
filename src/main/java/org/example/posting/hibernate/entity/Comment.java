@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +15,7 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private Long commentId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -26,10 +26,10 @@ public class Comment {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @Column(length = 3000, nullable = false)
+    @Column(name = "comment_text", length = 3000, nullable = false)
     private String commentText;
 
-    @Column(nullable = false)
+    @Column(name = "published_date", nullable = false)
     private LocalDateTime publishedDate;
 
     @PrePersist

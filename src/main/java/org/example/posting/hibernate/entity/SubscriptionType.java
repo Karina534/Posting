@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class SubscriptionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subscription_type_id")
     private Integer subscriptionTypeId;
 
     @Column(length = 100)

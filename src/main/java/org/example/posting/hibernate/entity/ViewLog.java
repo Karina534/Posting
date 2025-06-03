@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ViewLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "view_log_id")
     private Long viewLogId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -26,7 +27,7 @@ public class ViewLog {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @Column(nullable = false)
+    @Column(name = "view_date_time", nullable = false)
     private LocalDateTime viewDateTime;
 
     @PrePersist
