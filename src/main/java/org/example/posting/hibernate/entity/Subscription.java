@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "subscription", schema = "public")
 @Entity
+@ToString(exclude = "payments")
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

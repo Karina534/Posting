@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "images", schema = "public")
 @Data
+@ToString(exclude = "article")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Images {
@@ -18,7 +20,7 @@ public class Images {
     @Column(name = "image_id")
     private Long imageId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 

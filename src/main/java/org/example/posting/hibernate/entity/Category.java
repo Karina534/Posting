@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Table(name = "category")
 @Data
+@ToString(exclude = "articles")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
@@ -21,6 +23,6 @@ public class Category {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Article> articles;
 }

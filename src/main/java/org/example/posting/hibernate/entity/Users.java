@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@ToString(exclude = "subscription")
+@ToString(exclude = {"subscription", "notifications", "articles"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -69,7 +69,7 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Article> articles = new ArrayList<>();
 
     // Скорее всего часто не будет требоваться

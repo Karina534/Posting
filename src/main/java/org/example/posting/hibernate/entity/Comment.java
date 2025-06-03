@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment")
 @Data
+@ToString(exclude = {"user", "article"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
@@ -18,11 +20,11 @@ public class Comment {
     @Column(name = "comment_id")
     private Long commentId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 

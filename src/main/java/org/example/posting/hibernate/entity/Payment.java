@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payment", schema = "public")
 @Data
+@ToString(exclude = "subscription")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payment {
@@ -19,7 +21,7 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "subscription_id")
     private Subscription subscription;
 

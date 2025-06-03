@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "article")
 @Data
+@ToString(exclude = {"user", "category", "images", "comments", "likeLogs", "viewLogs"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article {
@@ -19,7 +21,7 @@ public class Article {
     @Column(name = "article_id")
     private Long articleId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
 
@@ -32,7 +34,7 @@ public class Article {
     @Column(name = "published_date", nullable = false)
     private LocalDate publishedDate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
