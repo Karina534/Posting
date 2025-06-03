@@ -28,12 +28,15 @@ public class Subscription {
 
     @NotNull
     @FutureOrPresent
+    @Column(name = "start_date")
     private LocalDate startDate = LocalDate.now();
 
     @FutureOrPresent
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     @NotNull
+    @Column(name = "is_active")
     private boolean isActive = false;
 
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)

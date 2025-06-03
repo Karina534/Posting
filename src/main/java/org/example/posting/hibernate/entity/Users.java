@@ -32,7 +32,7 @@ public class Users {
     @Column(length = 100)
     private String surname;
 
-    @Column(length = 100)
+    @Column(name = "last_name", length = 100)
     private String lastName;
 
     @Email

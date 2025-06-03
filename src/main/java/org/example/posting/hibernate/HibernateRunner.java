@@ -20,7 +20,7 @@ public class HibernateRunner {
             Subscription subscription = session.get(Subscription.class, 1);
             Users user = Users.builder().userId(1L).name("User").surname("Surname")
                     .lastName("LastName")
-                    .email("email")
+                    .email("email@mail.ru")
                     .hdPassword("password")
                     .birthDate(LocalDate.of(2000, 04, 03))
                     .sex(Sex.FEMALE)
