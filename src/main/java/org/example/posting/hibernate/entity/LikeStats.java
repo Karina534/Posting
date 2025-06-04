@@ -2,6 +2,7 @@ package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class LikeStats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +23,11 @@ public class LikeStats {
     private Article article;
 
     @Column(name = "like_count", nullable = false)
+    @Builder.Default
     private Long likeCount = 0L;
+
+    public void setArticle(Article article){
+        this.article = article;
+        article.setLikeStats(this);
+    }
 }
