@@ -4,20 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subscription", schema = "public")
 @Entity
 @ToString(exclude = "payments")
+@EqualsAndHashCode(exclude = "payments")
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +41,9 @@ public class Subscription {
     @Column(name = "is_active")
     private boolean isActive = false;
 
+    @Builder.Default
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Payment> payments;
+    private Set<Payment> payments = new HashSet<>();
 
     @AssertTrue(message = "Start date must be before end date.")
     public boolean isStartBeforeEnd() {

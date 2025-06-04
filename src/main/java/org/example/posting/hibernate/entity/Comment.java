@@ -1,10 +1,7 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "comment")
 @Data
 @ToString(exclude = {"user", "article"})
+@EqualsAndHashCode(exclude = {"article", "user"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {

@@ -1,10 +1,7 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +9,7 @@ import java.util.List;
 @Table(name = "category")
 @Data
 @ToString(exclude = "articles")
+@EqualsAndHashCode(exclude = "articles")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {

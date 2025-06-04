@@ -1,18 +1,15 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "view_log")
 @Data
 @ToString(exclude = {"user", "article"})
+@EqualsAndHashCode(exclude = {"user", "article"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class ViewLog {

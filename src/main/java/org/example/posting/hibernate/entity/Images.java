@@ -1,10 +1,7 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +9,7 @@ import java.time.LocalDate;
 @Table(name = "images", schema = "public")
 @Data
 @ToString(exclude = "article")
+@EqualsAndHashCode(exclude = "article")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Images {

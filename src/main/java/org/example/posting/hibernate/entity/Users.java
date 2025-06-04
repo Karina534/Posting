@@ -9,8 +9,8 @@ import lombok.*;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @ToString(exclude = {"subscription", "notifications", "articles"})
@@ -19,6 +19,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
+@EqualsAndHashCode(exclude = {"notifications", "articles"})
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +56,7 @@ public class Users {
     @NotNull
     private Sex sex;
 
+    @Column(columnDefinition = "TEXT")
     private String photo;
 
     @NotNull
@@ -66,11 +68,13 @@ public class Users {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notification> notifications = new ArrayList<>();
+    private Set<Notification> notifications = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Article> articles = new ArrayList<>();
+    private Set<Article> articles = new HashSet<>();
 
     // Скорее всего часто не будет требоваться
 //    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
@@ -84,5 +88,15 @@ public class Users {
         if (registrationDate == null){
             registrationDate = LocalDate.now();
         }
+    }
+
+    public void addNotification(Notification notification){
+        notifications.add(notification);
+        notification.setUser(this);
+    }
+
+    public void addArticles(Article article){
+        articles.add(article);
+        article.setUser(this);
     }
 }

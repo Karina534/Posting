@@ -1,18 +1,19 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "article")
 @Data
+@Builder
 @ToString(exclude = {"user", "category", "images", "comments", "likeLogs", "viewLogs"})
+@EqualsAndHashCode(exclude = {"images", "comments", "likeLogs", "viewLogs"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article {
@@ -38,15 +39,39 @@ public class Article {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Images> images;
+    private Set<Images> images = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LikeLog> likeLogs;
+    private Set<LikeLog> likeLogs = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ViewLog> viewLogs;
+    private Set<ViewLog> viewLogs = new HashSet<>();
+
+    public void addImage(Images image){
+        images.add(image);
+        image.setArticle(this);
+    }
+
+    public void addComments(Comment comment){
+        comments.add(comment);
+        comment.setArticle(this);
+    }
+
+    public void addLikeLog(LikeLog likeLog){
+        likeLogs.add(likeLog);
+        likeLog.setArticle(this);
+    }
+
+    public void addViewLog(ViewLog viewLog){
+        viewLogs.add(viewLog);
+        viewLog.setArticle(this);
+    }
 }
