@@ -3,6 +3,7 @@ package org.example.posting.hibernate.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(exclude = "articles")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +23,7 @@ public class Category {
     @Column(length = 100, nullable = false)
     private String title;
 
+    @Builder.Default
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 }

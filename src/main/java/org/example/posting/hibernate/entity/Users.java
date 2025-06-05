@@ -52,7 +52,7 @@ public class Users {
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "sex")
+    @Column(name = "sex", columnDefinition = "VARCHAR(7) NOT NULL")
     @NotNull
     private Sex sex;
 
