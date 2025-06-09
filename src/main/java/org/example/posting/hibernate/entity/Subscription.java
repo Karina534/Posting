@@ -41,6 +41,7 @@ public class Subscription {
     @Column(name = "is_active")
     private boolean isActive = false;
 
+    // N+1 problem join fetch в репозитории
     @Builder.Default
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Payment> payments = new HashSet<>();

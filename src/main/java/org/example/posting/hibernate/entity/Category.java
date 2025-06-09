@@ -23,6 +23,7 @@ public class Category {
     @Column(length = 100, nullable = false)
     private String title;
 
+    // N + 1 problem join fetch в репозитории
     @Builder.Default
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Article> articles = new ArrayList<>();

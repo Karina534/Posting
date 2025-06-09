@@ -68,10 +68,12 @@ public class Users {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
+    // N+1 join fetch или граф? граф если часто такие сценарии для вызова
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Notification> notifications = new HashSet<>();
 
+    // N+1 join fetch или граф?
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Article> articles = new HashSet<>();
