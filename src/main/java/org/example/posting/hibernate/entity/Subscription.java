@@ -5,6 +5,8 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import java.util.Set;
 @Entity
 @ToString(exclude = "payments")
 @EqualsAndHashCode(exclude = "payments")
+@Audited
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +47,7 @@ public class Subscription {
     // N+1 problem join fetch в репозитории
     @Builder.Default
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotAudited
     private Set<Payment> payments = new HashSet<>();
 
     @Version
