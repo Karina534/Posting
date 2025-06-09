@@ -61,6 +61,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ViewLog> viewLogs = new HashSet<>();
 
+    @Version
+    private Long version;
+
     public void addImage(Images image){
         images.add(image);
         image.setArticle(this);

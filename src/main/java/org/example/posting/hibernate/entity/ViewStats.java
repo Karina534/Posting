@@ -26,6 +26,9 @@ public class ViewStats {
     @Builder.Default
     private Long viewCount = 0L;
 
+    @Version
+    private Long version;
+
     public void setArticle(Article article){
         this.article = article;
         article.setViewStats(this);

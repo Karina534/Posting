@@ -26,6 +26,9 @@ public class LikeStats {
     @Builder.Default
     private Long likeCount = 0L;
 
+    @Version
+    private Long version;
+
     public void setArticle(Article article){
         this.article = article;
         article.setLikeStats(this);

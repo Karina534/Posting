@@ -45,6 +45,9 @@ public class Subscription {
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Payment> payments = new HashSet<>();
 
+    @Version
+    private Long version;
+
     @AssertTrue(message = "Start date must be before end date.")
     public boolean isStartBeforeEnd() {
         if (endDate == null){

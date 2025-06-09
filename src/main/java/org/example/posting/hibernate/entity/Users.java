@@ -76,6 +76,9 @@ public class Users {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Article> articles = new HashSet<>();
 
+    @Version
+    private Long version;
+
     // Скорее всего часто не будет требоваться
 //    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<LikeStats> likeStats = new ArrayList<>();
