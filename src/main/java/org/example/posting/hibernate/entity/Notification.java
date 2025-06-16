@@ -1,13 +1,12 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Entity
 @Table(name = "notification", schema = "public")
 @Data
@@ -20,16 +19,20 @@ public class Notification {
     @Column(name = "notification_id")
     private Long notificationId;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
+    @NotNull
     @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
 
+    @NotNull
     @Column(name = "send_date_time", nullable = false)
     private LocalDateTime sendDateTime;
 
+    @Builder.Default
     @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
 }

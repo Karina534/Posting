@@ -27,6 +27,7 @@ public class Subscription {
     @Column(name = "subscription_id")
     private Long subscriptionId;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "subscription_type_id", nullable = false)
     private SubscriptionType subscriptionType;
@@ -40,8 +41,8 @@ public class Subscription {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @NotNull
-    @Column(name = "is_active")
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
     private boolean isActive = false;
 
     // N+1 problem join fetch в репозитории

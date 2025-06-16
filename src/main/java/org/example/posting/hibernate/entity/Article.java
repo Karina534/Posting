@@ -1,6 +1,7 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
@@ -32,21 +33,26 @@ public class Article {
     @Column(name = "article_id")
     private Long articleId;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @Column(length = 400)
+    @NotNull
+    @Column(length = 400, nullable = false)
     private String title;
 
+    @NotNull
     @Column(columnDefinition = "TEXT", nullable = false)
     private String info;
 
+    @NotNull
     @Column(name = "published_date", nullable = false)
     private LocalDate publishedDate;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)

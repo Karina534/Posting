@@ -27,11 +27,11 @@ public class Users {
     private Long userId;
 
     @NotNull
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String name;
 
     @NotNull
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String surname;
 
     @Column(name = "last_name", length = 100)
@@ -39,20 +39,20 @@ public class Users {
 
     @Email
     @NotNull
-    @Column(unique = true, length = 200)
+    @Column(unique = true, length = 200, nullable = false)
     private String email;
 
     @NotNull
-    @Column(name = "hd_password", length = 255)
+    @Column(name = "hd_password", length = 255, nullable = false)
     private String hdPassword;
 
     @NotNull
     @Past
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "sex", columnDefinition = "VARCHAR(7) NOT NULL")
+    @Column(name = "sex", columnDefinition = "VARCHAR(7) NOT NULL", nullable = false)
     @NotNull
     private Sex sex;
 
@@ -61,9 +61,10 @@ public class Users {
 
     @NotNull
     @FutureOrPresent
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", nullable = false)
     private LocalDate registrationDate;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;

@@ -22,6 +22,7 @@ public class Category {
     @Column(name = "category_id")
     private Long categoryId;
 
+    @NonNull
     @Column(length = 100, nullable = false)
     private String title;
 

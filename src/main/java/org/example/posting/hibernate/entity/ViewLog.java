@@ -1,6 +1,7 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,14 +19,17 @@ public class ViewLog {
     @Column(name = "view_log_id")
     private Long viewLogId;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
+    @NotNull
     @Column(name = "view_date_time", nullable = false)
     private LocalDateTime viewDateTime;
 

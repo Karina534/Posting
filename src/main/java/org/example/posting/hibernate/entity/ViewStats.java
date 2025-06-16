@@ -1,6 +1,7 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,9 @@ public class ViewStats {
     @Column(name = "view_stats_id")
     private Long viewStatsId;
 
+    @NotNull
     @OneToOne(optional = false)
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
     @Column(name = "view_count", nullable = false)

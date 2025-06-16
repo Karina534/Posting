@@ -1,10 +1,8 @@
 package org.example.posting.hibernate.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +12,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = "subscription")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Payment {
 
     @Id
@@ -21,16 +20,20 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id")
+    @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
+    @NotNull
     @Column(nullable = false)
     private Integer price;
 
+    @NotNull
     @Column(name = "paid_date_time", nullable = false)
     private LocalDateTime paidDateTime;
 
+    @Builder.Default
     @Column(name = "is_paid", nullable = false)
     private boolean isPaid = false;
 
