@@ -33,9 +33,8 @@ public class Article {
     @Column(name = "article_id")
     private Long articleId;
 
-    @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private Users user;
 
     @NotNull

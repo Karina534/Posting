@@ -6,7 +6,7 @@ CREATE TABLE subscription_type (
 );
 
 CREATE TABLE subscription (
-                              subscription_id BIGINT PRIMARY KEY,
+                              subscription_id BIGSERIAL PRIMARY KEY,
                               subscription_type_id BIGINT NOT NULL,
                               start_date DATE DEFAULT CURRENT_DATE,
                               end_date DATE,
@@ -15,7 +15,7 @@ CREATE TABLE subscription (
 );
 
 CREATE TABLE users (
-                       user_id BIGINT PRIMARY KEY,
+                       user_id BIGSERIAL PRIMARY KEY,
                        name VARCHAR(100) NOT NULL,
                        surname VARCHAR(100) NOT NULL,
                        last_name VARCHAR(100),
@@ -26,6 +26,7 @@ CREATE TABLE users (
                        photo TEXT,
                        registration_date DATE NOT NULL DEFAULT CURRENT_DATE,
                        subscription_id BIGINT NOT NULL DEFAULT 1,
+                       email_confirmed boolean not null default false,
                        FOREIGN KEY (subscription_id) REFERENCES subscription (subscription_id)
 );
 
@@ -35,16 +36,16 @@ CREATE TABLE payment_method (
 );
 
 CREATE TABLE payment (
-                         payment_id BIGINT PRIMARY KEY,
-                         subscription_id BIGINT NOT NULL REFERENCES subscription(subscription_id),
+                         payment_id BIGSERIAL PRIMARY KEY,
+                         subscription_id BIGINT REFERENCES subscription(subscription_id),
                          price INTEGER NOT NULL CHECK (price >= 0),
-                         paid_date_time TIMESTAMP NOT NULL,
+                         paid_date_time TIMESTAMP,
                          is_paid BOOLEAN NOT NULL DEFAULT false,
                          payment_method_id BIGINT NOT NULL REFERENCES payment_method(payment_method_id)
 );
 
 CREATE TABLE notification (
-                              notification_id BIGINT PRIMARY KEY,
+                              notification_id BIGSERIAL PRIMARY KEY,
                               user_id BIGINT NOT NULL REFERENCES users(user_id),
                               message TEXT NOT NULL,
                               send_date_time TIMESTAMP NOT NULL,
@@ -57,8 +58,8 @@ CREATE TABLE category (
 );
 
 CREATE TABLE article (
-                         article_id BIGINT PRIMARY KEY,
-                         user_id BIGINT NOT NULL REFERENCES users(user_id),
+                         article_id BIGSERIAL PRIMARY KEY,
+                         user_id BIGINT REFERENCES users(user_id),
                          title VARCHAR(200),
                          info TEXT NOT NULL,
                          published_date DATE NOT NULL,
@@ -66,27 +67,27 @@ CREATE TABLE article (
 );
 
 CREATE TABLE images (
-                        image_id BIGINT PRIMARY KEY,
+                        image_id BIGSERIAL PRIMARY KEY,
                         article_id BIGINT NOT NULL REFERENCES article(article_id),
                         url TEXT NOT NULL,
                         uploaded_date DATE NOT NULL
 );
 
 CREATE TABLE like_log (
-                          like_log_id BIGINT PRIMARY KEY,
+                          like_log_id BIGSERIAL PRIMARY KEY,
                           user_id BIGINT NOT NULL REFERENCES users(user_id),
                           article_id BIGINT NOT NULL REFERENCES article(article_id),
                           like_date_time TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE like_stats (
-                            like_stats_id BIGINT PRIMARY KEY,
+                            like_stats_id BIGSERIAL PRIMARY KEY,
                             article_id BIGINT NOT NULL UNIQUE REFERENCES article(article_id),
                             like_count BIGINT NOT NULL
 );
 
 CREATE TABLE comment (
-                         comment_id BIGINT PRIMARY KEY,
+                         comment_id BIGSERIAL PRIMARY KEY,
                          user_id BIGINT NOT NULL REFERENCES users(user_id),
                          article_id BIGINT NOT NULL REFERENCES article(article_id),
                          comment_text VARCHAR(3000) NOT NULL,
@@ -94,14 +95,25 @@ CREATE TABLE comment (
 );
 
 CREATE TABLE view_log (
-                          view_log_id BIGINT PRIMARY KEY,
+                          view_log_id BIGSERIAL PRIMARY KEY,
                           user_id BIGINT NOT NULL REFERENCES users(user_id),
                           article_id BIGINT NOT NULL REFERENCES article(article_id),
                           view_date_time TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE view_stats (
-                            view_stats_id BIGINT PRIMARY KEY,
+                            view_stats_id BIGSERIAL PRIMARY KEY,
                             article_id BIGINT NOT NULL UNIQUE REFERENCES article(article_id),
                             view_count BIGINT NOT NULL DEFAULT 0
 );
+
+create table email_verification_token(
+                                         email_verification_id bigserial primary key,
+                                         token varchar(255) not null unique,
+                                         user_id bigint not null references users(user_id),
+                                         endDate timestamp not null
+);
+
+INSERT INTO subscription_type (title) VALUES ('стандартная'), ('про');
+INSERT INTO subscription (subscription_type_id, start_date, end_date, is_active)
+VALUES (1, NULL, NULL, true);

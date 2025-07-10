@@ -20,17 +20,15 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id", nullable = false)
+    @JoinColumn(name = "subscription_id")
     private Subscription subscription;
 
     @NotNull
     @Column(nullable = false)
     private Integer price;
 
-    @NotNull
-    @Column(name = "paid_date_time", nullable = false)
+    @Column(name = "paid_date_time")
     private LocalDateTime paidDateTime;
 
     @Builder.Default

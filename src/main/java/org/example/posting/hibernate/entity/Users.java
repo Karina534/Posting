@@ -69,6 +69,9 @@ public class Users {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
+    @Column(name = "email_confirmed", nullable = false)
+    private boolean emailConfirmed = false;
+
     // N+1 join fetch или граф? граф если часто такие сценарии для вызова
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -78,6 +81,9 @@ public class Users {
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Article> articles = new HashSet<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private EmailVerificationToken verificationToken;
 
     @Version
     private Long version;
