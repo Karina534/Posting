@@ -1,13 +1,12 @@
 package org.example.posting.hibernate.controller;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.posting.hibernate.dto.LoginDto;
-import org.example.posting.hibernate.dto.UserEditDto;
-import org.example.posting.hibernate.dto.UserForRegistrationDto;
-import org.example.posting.hibernate.dto.UserProfileReadDto;
+import org.example.posting.hibernate.dto.*;
 import org.example.posting.hibernate.entity.Users;
+import org.example.posting.hibernate.service.AuthService;
 import org.example.posting.hibernate.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserProfileController {
     private final UserService userService;
+    private final AuthService authService;
 
     // Страница профиля
     @GetMapping("/{id}/profile")
@@ -49,7 +49,7 @@ public class UserProfileController {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Пользователь зарегистрирован");
         response.put("userId", savedUserId);
-        response.put("redirect", String.format("/%s//profile", savedUserId));
+        response.put("redirect", String.format("/%s/profile", savedUserId));
 
         return ResponseEntity.ok(response);
     }
@@ -65,14 +65,35 @@ public class UserProfileController {
         System.out.println("Валидация сущности прошли успешно");
 
         System.out.println("Пытаемся авторизироваться");
-        Long userId = userService.loginUser(loginDto);
+        final JwtResponse token = authService.loginUser(loginDto);
         System.out.println("Пользователь авторизирован");
+        System.out.println("Дополнительно получаем userId");
+        Long userId = userService.getUserId(loginDto);
+        System.out.println("Получили userId = " + userId);
 
+        // UserId передавать не нужно, так как фронт может сам его вытянуть из токена. Обычно делают универсальный
+        // путь /profile, а фронт сам решает какого пользователя рендерить. Но у меня нет фронта, поэтому будем передавать
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Пользователь авторизирован");
         response.put("userId", userId);
-        response.put("redirect", String.format("/%s//profile", userId));
+        response.put("accessToken", token.getAccessToken());
+        response.put("refreshToken", token.getRefreshToken());
+        response.put("redirect", String.format("/%s/profile", userId));
         return ResponseEntity.ok(response);
+    }
+
+    // Страница для получения нового accessToken
+    @PostMapping("/token")
+    public ResponseEntity<JwtResponse> getNewAccessToken(@RequestBody RefreshJwtRequest request){
+        final JwtResponse token = authService.getAccessToken(request.getRefreshToken());
+        return ResponseEntity.ok(token);
+    }
+
+    // Обновление accessToken и refreshToken
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponse> getNerRefreshToken(@RequestBody RefreshJwtRequest request) throws AuthException {
+        final JwtResponse token = authService.refresh(request.getRefreshToken());
+        return ResponseEntity.ok(token);
     }
 
     // Страница для редактирования полей профиля

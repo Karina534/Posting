@@ -93,6 +93,7 @@ public class UserService {
         System.out.println("Заглушка с отправлением вместо почты токена " + token);
     }
 
+    // Редактирование профиля
     @Transactional
     public Long editUser(UserEditDto editDto){
         System.out.println("Ищем существующего пользователя в базе");
@@ -106,6 +107,7 @@ public class UserService {
         return editDto.getUserId();
     }
 
+    // Удалить пользователя
     @Transactional
     public boolean deleteUser(Long userId){
         System.out.println("Находим пользователя по id");
@@ -127,17 +129,9 @@ public class UserService {
         return true;
     }
 
-    @Transactional
-    public Long loginUser(LoginDto loginDto){
-        System.out.println("Пытаемся найти пользователя по email");
+    public Long getUserId(LoginDto loginDto){
         Users user = userRepository.findByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь не был найден"));
-
-        System.out.println("Проверяем пароли");
-        if (!passwordEncoder.matches(loginDto.getPassword(), user.getHdPassword())){
-            throw new BadCredentialsException("Неверный пароль");
-        }
-
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         return user.getUserId();
     }
 }

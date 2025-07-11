@@ -10,8 +10,6 @@ import org.example.posting.hibernate.repository.PaymentMethodRepository;
 import org.example.posting.hibernate.repository.PaymentRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDateTime;
 
