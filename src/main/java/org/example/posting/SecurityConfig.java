@@ -1,53 +1,85 @@
 package org.example.posting;
 
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.crypto.DirectDecrypter;
+import com.nimbusds.jose.crypto.DirectEncrypter;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
+import com.nimbusds.jose.jwk.OctetSequenceKey;
 import lombok.RequiredArgsConstructor;
-import org.example.posting.hibernate.filter.JwtFilter;
+import org.example.posting.hibernate.jwt.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+
+import java.text.ParseException;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtFilter jwtFilter;
+    @Value("${jwt.access-token-key}")
+    String accessTokenKey;
+    @Value("${jwt.refresh-token-key}")
+    String refreshTokenKey;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(AbstractHttpConfigurer::disable) // отключает CSRF-защиту (актуально для REST API)
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest().permitAll() // разрешает ВСЕ ЗАПРОСЫ без аутентификации
-//                )
-//                .build();
-//    }
-
-    // Конфигурация для будущего приложения
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        authz -> authz
-                                .requestMatchers("/api/auth/login", "/api/auth/token").permitAll()
-                                .anyRequest().authenticated()
-                )
-                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+    public JwtAuthenticationConfigurer jwtAuthenticationConfigurer(
+            PasswordEncoder passwordEncoder,
+            DaoUserDetailsService daoUserDetailsService,
+            JdbcTemplate jdbcTemplate
+    ) throws ParseException, JOSEException {
+        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setUserDetailsService(daoUserDetailsService);
+        daoProvider.setPasswordEncoder(passwordEncoder);
+
+        return new JwtAuthenticationConfigurer()
+                .accessTokenStringSerializer(new AccessTokenJwsStringSerializer(
+                        new MACSigner(OctetSequenceKey.parse(accessTokenKey))
+                ))
+                .refreshTokenStringSerializer(new RefreshTokenJweStringSerialize(
+                        new DirectEncrypter(OctetSequenceKey.parse(refreshTokenKey))
+                ))
+                .accessTokenStringDeserializer(new AccessTokenJwsStringDeserialize(
+                        new MACVerifier(OctetSequenceKey.parse(accessTokenKey))
+                ))
+                .refreshTokenStringDeserializer(new RefreshTokenJweStringDeserializer(
+                        new DirectDecrypter(OctetSequenceKey.parse(refreshTokenKey))
+                ))
+                .daoAuthenticationProvider(daoProvider)
+                .jdbcTemplate(jdbcTemplate);
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConfigurer jwtAuthenticationConfigurer) throws Exception {
+        http.with(jwtAuthenticationConfigurer, cfg -> {});
+
+        http.httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(ex ->
+                        ex.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/auth/login")))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeHttpRequests ->
+                        authorizeHttpRequests.requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/jwt/refresh").permitAll()
+                                .anyRequest().authenticated());
+
+        return http.build();
     }
 }

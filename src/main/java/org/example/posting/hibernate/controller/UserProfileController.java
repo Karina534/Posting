@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.posting.hibernate.dto.*;
 import org.example.posting.hibernate.entity.Users;
-import org.example.posting.hibernate.service.AuthService;
 import org.example.posting.hibernate.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

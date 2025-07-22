@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: Posting
+  datasource:
+    username: postgres
+    password: SmiSup704
+    url: jdbc:postgresql://localhost:5432/PostingDB
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  security:
+    debug: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+    root: INFO
+
+jwt:
+  access-token-key: '{"kty":"oct","k":"hi7S5RX5ZRZooHA0RKGctZ-KtR9FoESgCnH-3BNg5XI"}'
+  refresh-token-key: '{"kty":"oct","k":"956PBFst1FguLr5irJD-aQ"}'
+
+server:
+  http2:
+    enabled: true
+
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: https://idp.example.com/issuer
+
+#jwt:
+#  secret:
+#    access: bkZYu9rQJ6JZq/Fxu0InDM7IOXl8Q2N6ExU3/v6aMoo=
+#    refresh: Bvsr5bsqgV3d43gfVarQJH6j7DvfstWytf4lf9mOaHI=

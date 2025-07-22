@@ -3,7 +3,6 @@ package org.example.posting.hibernate.mapper;
 import lombok.RequiredArgsConstructor;
 import org.example.posting.hibernate.dto.UserForRegistrationDto;
 import org.example.posting.hibernate.entity.Users;
-import org.example.posting.hibernate.repository.SubscriptionRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
