@@ -74,7 +74,7 @@ public class JwtAuthenticationConfigurer extends AbstractHttpConfigurer<JwtAuthe
         builder.authenticationProvider(daoAuthenticationProvider)
                 .addFilterAfter(requestJwtTokenFilter, ExceptionTranslationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, CsrfFilter.class)
-                .addFilterAfter(refreshTokenFilter, AuthenticationFilter.class)
+                .addFilterAfter(refreshTokenFilter, ExceptionTranslationFilter.class)
                 .addFilterAfter(jwtLogOutFilter, ExceptionTranslationFilter.class)
                 .authenticationProvider(authenticationProvider);
     }

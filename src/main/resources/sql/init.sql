@@ -114,6 +114,11 @@ create table email_verification_token(
                                          endDate timestamp not null
 );
 
+create table t_token_denied (
+                                id uuid primary key,
+                                keep_time date
+);
+
 INSERT INTO subscription_type (title) VALUES ('стандартная'), ('про');
 INSERT INTO subscription (subscription_type_id, start_date, end_date, is_active)
 VALUES (1, NULL, NULL, true);

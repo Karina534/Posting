@@ -12,6 +12,24 @@ spring:
       ddl-auto: none
   security:
     debug: true
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          google:
+            # Можно не указывать, т.к. дефолты для Google уже настроены
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://www.googleapis.com/oauth2/v4/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
 
 logging:
   level:
@@ -27,14 +45,3 @@ jwt:
 server:
   http2:
     enabled: true
-
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: https://idp.example.com/issuer
-
-#jwt:
-#  secret:
-#    access: bkZYu9rQJ6JZq/Fxu0InDM7IOXl8Q2N6ExU3/v6aMoo=
-#    refresh: Bvsr5bsqgV3d43gfVarQJH6j7DvfstWytf4lf9mOaHI=
